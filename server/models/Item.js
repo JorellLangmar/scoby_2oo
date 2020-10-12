@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const itemSchema = new Schema({
+const itemSchema = new Schema(
+  {
+    contact: String,
     name: String,
     description: String,
     image: {
@@ -32,8 +34,9 @@ const itemSchema = new Schema({
       ref: "User",
     },
   },
-  { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } });
-  
-  const Item = mongoose.model("Item", itemSchema);
-  
-  module.exports = Item;
+  { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
+);
+
+const Item = mongoose.model("Item", itemSchema);
+
+module.exports = Item;

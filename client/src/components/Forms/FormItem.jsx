@@ -7,10 +7,10 @@ class ItemForm extends Component {
     name: "",
     description: "",
     image: "",
-    quantity:"",
+    quantity: "",
     category: "",
-    adresse:"",
-
+    address: "",
+    contact: "",
   };
 
   handleChange = (event) => {
@@ -22,20 +22,22 @@ class ItemForm extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    this.props.add(this.state);
+    this.props.addItem(this.state);
 
     this.setState({
       name: "",
+      description: "",
       image: "",
-      toy: "",
+      quantity: "",
+      category: "",
+      contact: "",
     });
   };
 
   handlePlace = (place) => {
-    // This handle is passed as a callback to the autocomplete component.
-    // Take a look at the data and see what you can get from it.
-    // Look at the item model to know what you should retrieve and set as state.
-    console.log(place);
+    this.setState({
+      address : place.place_name
+    })
   };
 
   render() {
@@ -53,7 +55,8 @@ class ItemForm extends Component {
               className="input"
               type="text"
               placeholder="What are you giving away ?"
-              name = "name"
+              name="name"
+              onChange={this.handleChange}
             />
           </div>
 
@@ -62,7 +65,7 @@ class ItemForm extends Component {
               Category
             </label>
 
-            <select id="category" defaultValue="-1" name="category">
+            <select id="category" defaultValue="-1" name="category" onChange={this.handleChange}>
               <option value="-1" disabled>
                 Select a category
               </option>
@@ -77,14 +80,20 @@ class ItemForm extends Component {
             <label className="label" htmlFor="quantity">
               Quantity
             </label>
-            <input className="input" id="quantity" type="number" name="quantity" />
+            <input
+              className="input"
+              id="quantity"
+              type="number"
+              name="quantity"
+              onChange={this.handleChange}
+            />
           </div>
 
           <div className="form-group">
             <label className="label" htmlFor="location">
               Address
             </label>
-            <LocationAutoComplete onSelect={this.handlePlace} />
+            <LocationAutoComplete onSelect={this.handlePlace} name="address"/>
           </div>
 
           <div className="form-group">
@@ -96,6 +105,7 @@ class ItemForm extends Component {
               className="text-area"
               placeholder="Tell us something about this item"
               name="description"
+              onChange={this.handleChange}
             ></textarea>
           </div>
 
@@ -103,7 +113,7 @@ class ItemForm extends Component {
             <label className="custom-upload label" htmlFor="image">
               Upload image
             </label>
-            <input className="input" id="image" type="file" name="image"/>
+            <input className="input" id="image" type="file" name="image" onChange={this.handleChange}/>
           </div>
 
           <h2>Contact information</h2>
@@ -113,10 +123,10 @@ class ItemForm extends Component {
               How do you want to be reached?
             </label>
             <div>
-              <input type="radio" />
+              <input type="radio" name="contact" value="email" onChange={this.handleChange}/>
               user email
             </div>
-            <input type="radio" />
+            <input type="radio" name="contact" value="phone" onChange={this.handleChange}/>
             contact phone number
           </div>
 
@@ -126,7 +136,9 @@ class ItemForm extends Component {
             personal page.
           </p>
 
-          <button className="btn-submit" onSubmit={this.handleSubmit}>Add Item</button>
+          <button className="btn-submit" onSubmit={this.handleSubmit}>
+            Add Item
+          </button>
         </form>
       </div>
     );
