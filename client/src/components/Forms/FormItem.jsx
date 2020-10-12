@@ -3,23 +3,32 @@ import LocationAutoComplete from "../LocationAutoComplete";
 import "../../styles/form.css";
 
 class ItemForm extends Component {
-  state = {};
+  state = {
+    name: "",
+    description: "",
+    image: "",
+    quantity:"",
+    category: "",
+    adresse:"",
 
-  handleChange(event) {
-    console.log("Wax On Wax Off");
-    this.setState({});
-  }
+  };
+
+  handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    this.setState({ [name]: value });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Wax On Wax Off");
 
-    // In order to send back the data to the client, since there is an input type file you have to send the
-    // data as formdata.
-    // The object that you'll be sending will maybe be a nested object, in order to handle nested objects in our form data
-    // Check out the stackoverflow solution below : )
+    this.props.add(this.state);
 
-    // Nested object into formData by user Vladimir "Vladi vlad" Novopashin @stackoverflow : ) => https://stackoverflow.com/a/42483509
+    this.setState({
+      name: "",
+      image: "",
+      toy: "",
+    });
   };
 
   handlePlace = (place) => {
@@ -32,7 +41,7 @@ class ItemForm extends Component {
   render() {
     return (
       <div className="ItemForm-container">
-        <form className="form" onChange={this.handleChange}>
+        <form className="form">
           <h2 className="title">Add Item</h2>
 
           <div className="form-group">
@@ -44,6 +53,7 @@ class ItemForm extends Component {
               className="input"
               type="text"
               placeholder="What are you giving away ?"
+              name = "name"
             />
           </div>
 
@@ -52,7 +62,7 @@ class ItemForm extends Component {
               Category
             </label>
 
-            <select id="category" defaultValue="-1">
+            <select id="category" defaultValue="-1" name="category">
               <option value="-1" disabled>
                 Select a category
               </option>
@@ -67,7 +77,7 @@ class ItemForm extends Component {
             <label className="label" htmlFor="quantity">
               Quantity
             </label>
-            <input className="input" id="quantity" type="number" />
+            <input className="input" id="quantity" type="number" name="quantity" />
           </div>
 
           <div className="form-group">
@@ -85,6 +95,7 @@ class ItemForm extends Component {
               id="description"
               className="text-area"
               placeholder="Tell us something about this item"
+              name="description"
             ></textarea>
           </div>
 
@@ -92,7 +103,7 @@ class ItemForm extends Component {
             <label className="custom-upload label" htmlFor="image">
               Upload image
             </label>
-            <input className="input" id="image" type="file" />
+            <input className="input" id="image" type="file" name="image"/>
           </div>
 
           <h2>Contact information</h2>
@@ -115,7 +126,7 @@ class ItemForm extends Component {
             personal page.
           </p>
 
-          <button className="btn-submit">Add Item</button>
+          <button className="btn-submit" onSubmit={this.handleSubmit}>Add Item</button>
         </form>
       </div>
     );
