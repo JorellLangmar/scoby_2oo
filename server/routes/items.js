@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Item = require("../models/Item");
+const uploader = require("../config/cloudinary");
+
 
 router.get("/", (req, res, next) => {
   Item.find()
@@ -24,9 +26,14 @@ router.get('/:id', async function(req, res, next) {
     }
   });
 
-  router.post('/', async function(req, res, next) {
+  router.post('/', uploader.single("image"), async function(req, res, next) {
     try {
       const newItem = req.body;
+
+      if (req.file) {
+        newItem.profileImage = req.file.path;
+      }
+
       const dbResponse = await Item.create(newItem);
       res.status(201)
       res.json(dbResponse)
@@ -37,9 +44,14 @@ router.get('/:id', async function(req, res, next) {
     }
   });
 
-  router.patch('/:id', async function(req, res, next) {
+  router.patch('/:id', uploader.single("image"),async function(req, res, next) {
     try {
+
       const newItem = req.body;
+
+      if (req.file) {
+        newItem.profileImage = req.file.path;
+      }
       const dbResponse = await Item.findByIdAndUpdate(req.params.id, newItem, {new : true});
       res.status(201)
       res.json(dbResponse)
