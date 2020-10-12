@@ -50,4 +50,12 @@ export default {
       .then((res) => res.data)
       .catch(errorHandler);
   },
+
+  createItem(endPoint, data) {
+    return service.post(endPoint, data);
+  },
+
+  updateItem(endPoint, data) {
+    return service.patch(endPoint, data);
+  }
 };

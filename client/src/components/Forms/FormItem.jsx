@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import LocationAutoComplete from "../LocationAutoComplete";
 import "../../styles/form.css";
+import apiHandler from "../../api/apiHandler";
+
 
 class ItemForm extends Component {
   state = {
@@ -11,7 +13,9 @@ class ItemForm extends Component {
     category: "",
     address: "",
     contact: "",
+    location: "",
   };
+
 
   handleChange = (event) => {
     const name = event.target.name;
@@ -19,31 +23,82 @@ class ItemForm extends Component {
     this.setState({ [name]: value });
   };
 
+  updateItem = () => {
+    apiHandler
+      .updateItem("/api/items" + this.props.id, this.state)
+      .then(() => {
+        this.props.history.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  createItem() {
+    const fd = new FormData();
+
+    for (let key in this.state) {
+      fd.append(key, this.state[key]);
+    }
+
+    // console.log(fd);
+
+    apiHandler
+      .createItem("/api/items", fd)
+      .then((apiRes) => {
+        // console.log(apiRes);
+        this.props.history.push("/");
+      })
+      .catch((apiError) => {
+        console.log(apiError);
+      });
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
 
-    this.props.addItem(this.state);
-
-    this.setState({
-      name: "",
-      description: "",
-      image: "",
-      quantity: "",
-      category: "",
-      contact: "",
-    });
+      if (this.props.action === "edit") {
+      this.updateItem();
+    } else {
+      this.createItem();
+    }
   };
 
   handlePlace = (place) => {
+
+    function buildFormData (formData, data, parentKey) {
+      if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+        Object.keys(data).forEach(key => {
+          buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+        });
+      } else {
+        const value = data == null ? '' : data;
+    
+        formData.append(parentKey, value);
+      }
+    };
+    
+    function jsonToFormData (data) {
+      const formData = new FormData();
+    
+      buildFormData(formData, data);
+      // console.log(formData);
+      return formData;
+    }
+    let newLoc = {coordinates : [place.center[0], place.center[1]]}
+
+    jsonToFormData(this.state.location)
+    // console.log(newLoc);
     this.setState({
-      address : place.place_name
+      address : place.place_name,
+      location : newLoc
     })
   };
 
   render() {
     return (
       <div className="ItemForm-container">
-        <form className="form">
+        <form className="form" onSubmit={this.handleSubmit}>
           <h2 className="title">Add Item</h2>
 
           <div className="form-group">
@@ -136,7 +191,7 @@ class ItemForm extends Component {
             personal page.
           </p>
 
-          <button className="btn-submit" onSubmit={this.handleSubmit}>
+          <button className="btn-submit">
             Add Item
           </button>
         </form>

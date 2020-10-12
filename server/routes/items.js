@@ -29,6 +29,7 @@ router.get('/:id', async function(req, res, next) {
   router.post('/', uploader.single("image"), async function(req, res, next) {
     try {
       const newItem = req.body;
+      console.log(newItem);
 
       if (req.file) {
         newItem.profileImage = req.file.path;
