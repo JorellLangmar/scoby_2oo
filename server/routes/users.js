@@ -7,9 +7,14 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
+
+///api/users
+
 router.patch('/me', async function(req, res, next) {
   try {
     const updateUser = req.body;
+
+    console.log(updateUser)
     const dbResponse = await User.findByIdAndUpdate(req.session.currentUser._id, updateUser, {new : true});
     res.status(201)
     res.json(dbResponse)

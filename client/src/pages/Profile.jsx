@@ -3,11 +3,47 @@ import { Link } from "react-router-dom";
 import { withUser } from "../components/Auth/withUser";
 import "../styles/Profile.css";
 import "../styles/CardItem.css";
+import apiHandler from "../api/apiHandler";
+
 class Profile extends Component {
+  state = {
+    phoneNumber: "",
+    items: [],
+  };
+
+  componentDidMount() {
+    apiHandler
+      .getItems()
+      .then((items) => {
+        console.log(items.data);
+        this.setState({ items: items.data });
+      })
+      .catch((err) => console.log(err));
+  }
+
+  handleChange = (evt) => {
+    const name = evt.target.name;
+    const value= evt.target.value;
+    this.setState({ [name]: value });
+  }
+
+  handleSubmit = (evt) => {
+    evt.preventDefault();
+    apiHandler
+    .updateUser(this.state)
+    .then(apiRes => {
+      console.log("profile - apiRes: ",apiRes);
+    })
+    .catch(apiErr => {
+      console.log("profile - apiErr: ",apiErr);
+    })
+  }
+
+
   render() {
     const { authContext } = this.props;
     const { user } = authContext;
-
+    console.log(this.state);
     return (
       <div style={{ padding: "100px", fontSize: "1.25rem" }}>
         <h2 style={{ fontSize: "1.5rem", marginBottom: "10px" }}>
@@ -42,18 +78,23 @@ class Profile extends Component {
           <div className="user-contact">
             <h4>Add a phone number</h4>
 
-            <form className="form">
+            <form className="form" onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label className="label" htmlFor="phoneNumber">
                   Phone number
                 </label>
+             
                 <input
                   className="input"
                   id="phoneNumber"
                   type="text"
                   name="phoneNumber"
                   placeholder="Add phone number"
+                   value={this.state.phoneNumber}
+                   onChange={this.handleChange}
                 />
+       
+
               </div>
               <button className="form__button">Add phone number</button>
             </form>
@@ -78,18 +119,28 @@ class Profile extends Component {
                   alt="item"
                 />
               </div>
+
               <div className="description">
-                <h2>Name of item</h2>
-                <h4>Quantity: 1 </h4>
-                <p>Description of the item</p>
-                <div className="buttons">
-                  <span>
-                    <button className="btn-secondary">Delete</button>
-                  </span>
-                  <span>
-                    <button className="btn-primary">Edit</button>
-                  </span>
-                </div>
+                {this.state.items &&
+                  this.state.items.map((item) => (
+                    <>
+                      <h2>{item.name}</h2>
+                      <h4>Quantity: {item.quantity} </h4>
+                      <p>{item.description}</p>
+                      <div className="buttons">
+                        <button
+                          className="btn-secondary"
+                          onClick={delete item._id}
+                        >
+                          Delete
+                        </button>
+
+                        <Link to={`/items/${item._id}`}>
+                          <button className="btn-primary">Edit</button>
+                        </Link>
+                      </div>
+                    </>
+                  ))}
               </div>
             </div>
           </div>

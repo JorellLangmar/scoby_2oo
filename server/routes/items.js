@@ -45,6 +45,7 @@ router.get('/:id', async function(req, res, next) {
   });
 
   router.patch('/:id', uploader.single("image"),async function(req, res, next) {
+    console.log("yoyo")
     try {
 
       const newItem = req.body;

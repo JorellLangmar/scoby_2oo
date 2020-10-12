@@ -16,6 +16,7 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Contact",
   },
+  phoneNumber: String,
 });
 
 const User = mongoose.model("User", userSchema);
