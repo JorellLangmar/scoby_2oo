@@ -51,14 +51,12 @@ export default {
       .catch(errorHandler);
   },
 
-<<<<<<< HEAD
   updateUser(data){
     console.log("phoneNumber = ", data)
     return service.patch("/api/users/me", data);
-  }
+  },
 
 
-=======
   createItem(endPoint, data) {
     return service.post(endPoint, data);
   },
@@ -66,5 +64,4 @@ export default {
   updateItem(endPoint, data) {
     return service.patch(endPoint, data);
   }
->>>>>>> f380aa265981e60d3bbf13ea283559eaa4b19d6a
 };
