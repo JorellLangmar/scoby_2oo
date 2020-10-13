@@ -129,7 +129,7 @@ class Profile extends Component {
               <div className="description">
                 {this.state.items &&
                   this.state.items.map((item, i) => (
-                    <div key={i}>
+                    < React.Fragment key={i}>
                       <h2>{item.name}</h2>
                       <h4>Quantity: {item.quantity} </h4>
                       <p>{item.description}</p>
@@ -145,7 +145,7 @@ class Profile extends Component {
                           <button className="btn-primary">Edit</button>
                         </Link>
                       </div>
-                    </div>
+                    </React.Fragment>
                   ))}
               </div>
             </div>

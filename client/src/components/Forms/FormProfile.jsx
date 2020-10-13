@@ -3,7 +3,6 @@ import UserContext from "../Auth/UserContext";
 import { withUser } from "../Auth/withUser";
 import apiHandler from "../../api/apiHandler";
 import "../../styles/form.css";
-import { AuthContext } from "../Auth/AuthProvider";
 
 class FormProfile extends Component {
     static contextType = UserContext;
@@ -22,16 +21,12 @@ class FormProfile extends Component {
 
 
   handleChange = (event) => {
-    const { user } = this.props.authContext;
     const key = event.target.name;
     const value =
       event.target.type === "file" ? event.target.files[0] : event.target.value;
 
     this.setState({
       [key]: value,
-
-
-
     });
   };
 

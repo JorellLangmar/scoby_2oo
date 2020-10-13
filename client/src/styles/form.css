@@ -122,3 +122,15 @@
 .form-section-bottom {
   text-align: center;
 }
+
+.buttons button {
+  margin-bottom: 15px;
+  margin-right: 5px;
+  background: #5663ff;
+  width: 10vw;
+  color: white;
+  padding: 8px 8px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+}
