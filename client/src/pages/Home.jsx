@@ -37,7 +37,7 @@ class Home extends Component {
           {!this.state.items || this.state.items.length === 0
             ? null
             :this.state.items.map((item, i) => <Marker key={i} coordinates={item.location.coordinates} anchor="bottom">
-            <img style={{width:"2vw"}} src={item.image} alt={item.name} />
+            <img style={{width:"3vw"}} src={item.image} alt={item.name} />
           </Marker>)}
           
           <Layer

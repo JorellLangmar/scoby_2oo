@@ -5,8 +5,6 @@ import apiHandler from "../../api/apiHandler";
 import { withUser } from "../Auth/withUser";
 import UserContext from "../Auth/UserContext";
 
-
-
 class FormItem extends Component {
   static contextType = UserContext;
 
@@ -19,12 +17,13 @@ class FormItem extends Component {
     address: "",
     contact: "",
     location: "",
-    id_user:""
+    id_user: "",
   };
 
   handleChange = (event) => {
+    const value =
+      event.target.type === "file" ? event.target.files[0] : event.target.value;
     const name = event.target.name;
-    const value = event.target.value;
     this.setState({ [name]: value });
   };
 
@@ -40,29 +39,36 @@ class FormItem extends Component {
   };
 
   createItem() {
-
-
-    function buildFormData (formData, data, parentKey) {
-      if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
-        Object.keys(data).forEach(key => {
-          buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+    function buildFormData(formData, data, parentKey) {
+      if (
+        data &&
+        typeof data === "object" &&
+        !(data instanceof Date) &&
+        !(data instanceof File)
+      ) {
+        Object.keys(data).forEach((key) => {
+          buildFormData(
+            formData,
+            data[key],
+            parentKey ? `${parentKey}[${key}]` : key
+          );
         });
       } else {
-        const value = data == null ? '' : data;
-        
+        const value = data == null ? "" : data;
+
         formData.append(parentKey, value);
       }
-    };
-    
-    function jsonToFormData (data) {
+    }
+
+    function jsonToFormData(data) {
       const formData = new FormData();
-      
+
       buildFormData(formData, data);
       return formData;
     }
 
-    let fd = jsonToFormData(this.state)
-    
+    let fd = jsonToFormData(this.state);
+
     apiHandler
       .createItem("/api/items", fd)
       .then((apiRes) => {
@@ -77,7 +83,7 @@ class FormItem extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-      if (this.props.action === "edit") {
+    if (this.props.action === "edit") {
       this.updateItem();
     } else {
       this.createItem();
@@ -85,18 +91,17 @@ class FormItem extends Component {
   };
 
   handlePlace = (place) => {
-    const {user} = this.props.authContext; 
-    let newLoc = {coordinates : [place.center[0], place.center[1]]}
+    const { user } = this.props.authContext;
+    let newLoc = { coordinates: [place.center[0], place.center[1]] };
 
     this.setState({
-      address : place.place_name,
-      location : newLoc,
-      id_user : user._id,
-    })
+      address: place.place_name,
+      location: newLoc,
+      id_user: user._id,
+    });
   };
 
   render() {
-    
     return (
       <div className="ItemForm-container">
         <form className="form" onSubmit={this.handleSubmit}>
@@ -121,7 +126,12 @@ class FormItem extends Component {
               Category
             </label>
 
-            <select id="category" defaultValue="-1" name="category" onChange={this.handleChange}>
+            <select
+              id="category"
+              defaultValue="-1"
+              name="category"
+              onChange={this.handleChange}
+            >
               <option value="-1" disabled>
                 Select a category
               </option>
@@ -149,7 +159,7 @@ class FormItem extends Component {
             <label className="label" htmlFor="location">
               Address
             </label>
-            <LocationAutoComplete onSelect={this.handlePlace} name="address"/>
+            <LocationAutoComplete onSelect={this.handlePlace} name="address" />
           </div>
 
           <div className="form-group">
@@ -169,7 +179,13 @@ class FormItem extends Component {
             <label className="custom-upload label" htmlFor="image">
               Upload image
             </label>
-            <input className="input" id="image" type="file" name="image" onChange={this.handleChange}/>
+            <input
+              className="input"
+              id="image"
+              type="file"
+              name="image"
+              onChange={this.handleChange}
+            />
           </div>
 
           <h2>Contact information</h2>
@@ -179,10 +195,20 @@ class FormItem extends Component {
               How do you want to be reached?
             </label>
             <div>
-              <input type="radio" name="contact" value="email" onChange={this.handleChange}/>
+              <input
+                type="radio"
+                name="contact"
+                value="email"
+                onChange={this.handleChange}
+              />
               user email
             </div>
-            <input type="radio" name="contact" value="phone" onChange={this.handleChange}/>
+            <input
+              type="radio"
+              name="contact"
+              value="phone"
+              onChange={this.handleChange}
+            />
             contact phone number
           </div>
 
@@ -192,9 +218,7 @@ class FormItem extends Component {
             personal page.
           </p>
 
-          <button className="btn-submit">
-            Add Item
-          </button>
+          <button className="btn-submit">Add Item</button>
         </form>
       </div>
     );

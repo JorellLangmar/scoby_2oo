@@ -42,7 +42,7 @@ router.get('/:id', async function(req, res, next) {
       console.log(newItem);
 
       if (req.file) {
-        newItem.profileImage = req.file.path;
+        newItem.image = req.file.path;
       }
 
       const dbResponse = await Item.create(newItem);
