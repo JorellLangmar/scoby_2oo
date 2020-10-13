@@ -75,14 +75,14 @@ class Profile extends Component {
               Edit profile
             </Link>
           </div>
-
+          {!user.phoneNumber && (
+              <>
           <div className="user-contact">
             <h4>Add a phone number</h4>
 
             <form className="form" onSubmit={this.handleSubmit}>
 
-            {!user.phoneNumber && (
-              <>
+            
               <div className="form-group">
                 <label className="label" htmlFor="phoneNumber">
                   Phone number
@@ -100,10 +100,10 @@ class Profile extends Component {
               </div>
               
               <button className="form__button">Add phone number</button>
-              </>
-          )}
             </form>
           </div>
+              </>
+          )}
 
           {/* Break whatever is belo  */}
           {!this.state.items &&
