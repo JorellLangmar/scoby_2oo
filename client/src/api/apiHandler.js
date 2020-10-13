@@ -59,7 +59,7 @@ export default {
   },
 
   updateUser(data){
-    console.log("phoneNumber = ", data)
+    
     return service.patch("/api/users/me", data);
   },
 
@@ -70,5 +70,10 @@ export default {
 
   updateItem(endPoint, data) {
     return service.patch(endPoint, data);
+  },
+
+  deleteItem(endPoint, id) {
+    return service.delete(endPoint+id);
   }
+
 };

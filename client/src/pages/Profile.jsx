@@ -27,6 +27,14 @@ class Profile extends Component {
     this.setState({ [name]: value });
   }
 
+  deleteRow(itemId){
+    apiHandler
+    .deleteItem("/api/items/", itemId)
+    .then(apiRes => console.log(apiRes))
+    .catch(apiErr => console.log(apiErr))
+  }
+
+
   handleSubmit = (evt) => {
     evt.preventDefault();
     apiHandler
@@ -136,7 +144,7 @@ class Profile extends Component {
                       <div className="buttons">
                         <button
                           className="btn-secondary"
-                          // onClick={delete item._id}
+                         onClick={() => (this.deleteRow(item._id))}
                         >
                           Delete
                         </button>
