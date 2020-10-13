@@ -3,7 +3,7 @@ import LocationAutoComplete from "../LocationAutoComplete";
 import "../../styles/form.css";
 import apiHandler from "../../api/apiHandler";
 import { withUser } from "../Auth/withUser";
-import UserContext from "../Auth/AuthContext";
+import UserContext from "../Auth/UserContext";
 
 
 
@@ -90,24 +90,18 @@ class ItemForm extends Component {
   };
 
   handlePlace = (place) => {
-
-    // var location = {...this.state.location}
-    // location.coordinates = [place.center[0], place.center[1]];
-    // this.setState({location})
-
+    const {user} = this.props.authContext; 
     let newLoc = {coordinates : [place.center[0], place.center[1]]}
 
-    // console.log(newLoc);
     this.setState({
       address : place.place_name,
       location : newLoc,
-      // id_user: req.session.currentUser._id
+      id_user : user._id,
     })
   };
 
   render() {
-    const {user} = this.props.authContext; 
-    console.log(user);
+    
     return (
       <div className="ItemForm-container">
         <form className="form" onSubmit={this.handleSubmit}>

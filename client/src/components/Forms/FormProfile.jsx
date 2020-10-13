@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import UserContext from "../Auth/AuthContext";
+import UserContext from "../Auth/UserContext";
 import { withUser } from "../Auth/withUser";
 import apiHandler from "../../api/apiHandler";
 import "../../styles/form.css";
