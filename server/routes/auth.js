@@ -59,7 +59,13 @@ router.post("/signup", (req, res, next) => {
 router.get("/isLoggedIn", (req, res, next) => {
   // If currentUser is defined in the session it means the user is logged in.
   if (req.session.currentUser) {
-    res.status(200).json(req.session.currentUser)
+    User.findById(req.session.currentUser._id).select("-password")
+    .then(dbRes => {
+      res.status(200).json(dbRes);
+    })
+    .catch((dbErr) => {
+      res.status(500).json(dbErr);
+    })
   } else {
     res.status(401).json({ message: "Unauthorized" });
   }

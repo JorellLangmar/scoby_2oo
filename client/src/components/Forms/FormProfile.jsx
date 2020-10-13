@@ -6,63 +6,74 @@ import "../../styles/form.css";
 import { AuthContext } from "../Auth/AuthProvider";
 
 class FormProfile extends Component {
-  static contextType = UserContext;
+    static contextType = UserContext;
+    
+    state = {
+      firstName: "",
+      lastName: "",
+      profileImg: "",
+      email: "",
+      phoneNumber: "",
+      password: ""
+    };
 
-  state = {
-    firstName: "",
-    lastName: "",
-    profileImg: "",
-    email: "",
-    phoneNumber: "",
-    password: "",
-  };
+
+ getderivedstate
+
 
   handleChange = (event) => {
     const { user } = this.props.authContext;
-     const key = event.target.name;
-     const value =
-     event.target.type === "file" ? event.target.files[0] : event.target.value;
+    const key = event.target.name;
+    const value =
+      event.target.type === "file" ? event.target.files[0] : event.target.value;
 
-     this.setState({ 
-         [key]: value 
-        });
+    this.setState({
+      [key]: value,
+
+
+
+    });
   };
 
-   handleSubmit = (event) => {
-     event.preventDefault();
-     const fd = new FormData();
-   
-     console.log("pouet >>>>", this.state)
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const fd = new FormData();
 
-     for (const key in this.state) {
-         console.log(key, "<<<<<<< key", this.state, " >>>>>>>>this.state")
-       fd.append(key, this.state[key]);
-     
-     }
-    
+    for (const key in this.state) {
+        if(this.state[key]){
+            fd.append(key, this.state[key]);
+        }
+      
+    }
+
     apiHandler
-    .updateUser(fd)
-    .then((data) => {
-      console.log(data)
-    })
-    .catch((error) => {
+      .updateUser(fd)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
         console.log(error);
-    })
-
+      });
   };
 
   render() {
     const { user } = this.props.authContext;
 
-     if (!user) return <div>Loading...</div>;
+    console.log(user);
+
+    if (!user) return <div>Loading...</div>;
     return (
       <section className="form-section">
-        <form   autoComplete="off" className="form" onChange={this.handleChange} onSubmit={this.handleSubmit}>
-         
+        <form
+          autoComplete="off"
+          className="form"
+          onChange={this.handleChange}
+          onSubmit={this.handleSubmit}
+        >
           <h1 className="header">Edit profile</h1>
 
-          <div >
-            <img src={user.profileImg}  alt={user.firstName} />
+          <div>
+            <img src={user.profileImg} alt={user.firstName} />
 
             {/* <input
             type="file"
@@ -71,11 +82,9 @@ class FormProfile extends Component {
             onChange={this.handleChange}
             /> */}
 
-      <label htmlFor="profileImg" className="btn"></label>
-     <input id="profileImg"  type="file"  />
-    
-
-       </div>
+            <label htmlFor="profileImg" className="btn"></label>
+            <input id="profileImg" type="file" />
+          </div>
 
           <div className="form-group">
             <label className="label" htmlFor="firstName">
@@ -112,10 +121,9 @@ class FormProfile extends Component {
               type="email"
               name="email"
               defaultValue={user.email}
-              
             />
           </div>
-          
+
           <div className="form-group">
             <label className="label" htmlFor="phoneNumber">
               Phone number
@@ -127,27 +135,22 @@ class FormProfile extends Component {
               name="phoneNumber"
               defaultValue={user.phoneNumber}
             />
-           
           </div>
 
           <div className="form-group">
-          <label className="label" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="input"
-          type="password"
-          name="password"
-          id="password"
-          defaultValue={user.password}
-          
-        />
-         </div>
-          
+            <label className="label" htmlFor="password">
+              Password
+            </label>
+            <input
+              className="input"
+              type="password"
+              name="password"
+              id="password"
+              defaultValue={user.password}
+            />
+          </div>
 
-        <button className="btn-submit">Submit</button>
-        
-
+          <button className="btn-submit">Submit</button>
         </form>
       </section>
     );
