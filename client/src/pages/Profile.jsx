@@ -33,6 +33,7 @@ class Profile extends Component {
     .updateUser(this.state)
     .then(apiRes => {
       console.log("profile - apiRes: ",apiRes);
+      //
     })
     .catch(apiErr => {
       console.log("profile - apiErr: ",apiErr);
@@ -79,6 +80,9 @@ class Profile extends Component {
             <h4>Add a phone number</h4>
 
             <form className="form" onSubmit={this.handleSubmit}>
+
+            {!user.phoneNumber && (
+              <>
               <div className="form-group">
                 <label className="label" htmlFor="phoneNumber">
                   Phone number
@@ -93,10 +97,11 @@ class Profile extends Component {
                    value={this.state.phoneNumber || user.phoneNumber}
                    onChange={this.handleChange}
                 />
-       
-
               </div>
+              
               <button className="form__button">Add phone number</button>
+              </>
+          )}
             </form>
           </div>
 
