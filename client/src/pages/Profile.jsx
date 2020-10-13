@@ -11,12 +11,12 @@ class Profile extends Component {
     items: [],
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     apiHandler
-      .getItems()
+      .getItemsTwo("/api/items/profile")
       .then((items) => {
-        console.log(items.data, "get items data :)");
-        this.setState({ items: items.data });
+        console.log(items, "get items data :)");
+        this.setState({ items: items });
       })
       .catch((err) => console.log(err));
   }
@@ -101,6 +101,7 @@ class Profile extends Component {
           </div>
 
           {/* Break whatever is belo  */}
+          {!this.state.items &&
           <div className="CardItem">
             <div className="item-empty">
               <div className="round-image">
@@ -108,7 +109,7 @@ class Profile extends Component {
               </div>
               <p>You don't have any items :(</p>
             </div>
-          </div>
+          </div>}
 
           <div className="CardItem">
             <h3>Your items</h3>
@@ -122,15 +123,15 @@ class Profile extends Component {
 
               <div className="description">
                 {this.state.items &&
-                  this.state.items.map((item) => (
-                    <>
+                  this.state.items.map((item, i) => (
+                    <div key={i}>
                       <h2>{item.name}</h2>
                       <h4>Quantity: {item.quantity} </h4>
                       <p>{item.description}</p>
                       <div className="buttons">
                         <button
                           className="btn-secondary"
-                          onClick={delete item._id}
+                          // onClick={delete item._id}
                         >
                           Delete
                         </button>
@@ -139,7 +140,7 @@ class Profile extends Component {
                           <button className="btn-primary">Edit</button>
                         </Link>
                       </div>
-                    </>
+                    </div>
                   ))}
               </div>
             </div>

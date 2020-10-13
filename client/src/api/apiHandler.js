@@ -51,6 +51,13 @@ export default {
       .catch(errorHandler);
   },
 
+  getItemsTwo(endPoint) {
+    return service
+      .get(endPoint)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
   updateUser(data){
     console.log("phoneNumber = ", data)
     return service.patch("/api/users/me", data);

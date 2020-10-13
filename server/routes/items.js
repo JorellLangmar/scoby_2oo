@@ -14,6 +14,16 @@ router.get("/", (req, res, next) => {
     });
 });
 
+router.get("/profile", (req, res, next) => {
+  Item.find({ id_user: { $eq: req.session.currentUser._id }})
+    .then((dbResponse) => {
+      res.status(200).json(dbResponse);
+    })
+    .catch((error) => {
+      res.status(500).json(error);
+    });
+});
+
 router.get('/:id', async function(req, res, next) {
     try {
       const dbResponse = await Item.findById(req.params.id);
