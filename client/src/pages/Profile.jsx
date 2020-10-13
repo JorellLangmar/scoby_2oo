@@ -15,7 +15,7 @@ class Profile extends Component {
     apiHandler
       .getItems()
       .then((items) => {
-        console.log(items.data);
+        console.log(items.data, "get items data :)");
         this.setState({ items: items.data });
       })
       .catch((err) => console.log(err));
@@ -90,7 +90,7 @@ class Profile extends Component {
                   type="text"
                   name="phoneNumber"
                   placeholder="Add phone number"
-                   value={this.state.phoneNumber}
+                   value={this.state.phoneNumber || user.phoneNumber}
                    onChange={this.handleChange}
                 />
        

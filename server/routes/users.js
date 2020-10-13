@@ -10,11 +10,15 @@ router.get("/", function (req, res, next) {
 
 ///api/users
 
-router.patch('/me', async function(req, res, next) {
+router.patch('/me', uploader.single("profileImg"), async function(req, res, next) {
+  console.log(req.body);
+  console.log(req.session.currentUser._id); 
   try {
     const updateUser = req.body;
-
-    console.log(updateUser)
+    if (req.file) {
+      updateUser.profileImg = req.file.path;
+      }
+    
     const dbResponse = await User.findByIdAndUpdate(req.session.currentUser._id, updateUser, {new : true});
     res.status(201)
     res.json(dbResponse)
