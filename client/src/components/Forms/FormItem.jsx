@@ -2,9 +2,14 @@ import React, { Component } from "react";
 import LocationAutoComplete from "../LocationAutoComplete";
 import "../../styles/form.css";
 import apiHandler from "../../api/apiHandler";
+import { withUser } from "../Auth/withUser";
+import UserContext from "../Auth/AuthContext";
+
 
 
 class ItemForm extends Component {
+  static contextType = UserContext;
+
   state = {
     name: "",
     description: "",
@@ -14,8 +19,8 @@ class ItemForm extends Component {
     address: "",
     contact: "",
     location: "",
+    id_user:""
   };
-
 
   handleChange = (event) => {
     const name = event.target.name;
@@ -35,14 +40,34 @@ class ItemForm extends Component {
   };
 
   createItem() {
-    const fd = new FormData();
+    // const fd = new FormData();
 
-    for (let key in this.state) {
-      fd.append(key, this.state[key]);
+    // for (let key in this.state) {
+    //   fd.append(key, this.state[key]);
+    // }
+
+
+    function buildFormData (formData, data, parentKey) {
+      if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+        Object.keys(data).forEach(key => {
+          buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+        });
+      } else {
+        const value = data == null ? '' : data;
+        
+        formData.append(parentKey, value);
+      }
+    };
+    
+    function jsonToFormData (data) {
+      const formData = new FormData();
+      
+      buildFormData(formData, data);
+      return formData;
     }
 
-    // console.log(fd);
-
+    let fd = jsonToFormData(this.state)
+    
     apiHandler
       .createItem("/api/items", fd)
       .then((apiRes) => {
@@ -66,36 +91,23 @@ class ItemForm extends Component {
 
   handlePlace = (place) => {
 
-    function buildFormData (formData, data, parentKey) {
-      if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
-        Object.keys(data).forEach(key => {
-          buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
-        });
-      } else {
-        const value = data == null ? '' : data;
-    
-        formData.append(parentKey, value);
-      }
-    };
-    
-    function jsonToFormData (data) {
-      const formData = new FormData();
-    
-      buildFormData(formData, data);
-      // console.log(formData);
-      return formData;
-    }
+    // var location = {...this.state.location}
+    // location.coordinates = [place.center[0], place.center[1]];
+    // this.setState({location})
+
     let newLoc = {coordinates : [place.center[0], place.center[1]]}
 
-    jsonToFormData(this.state.location)
     // console.log(newLoc);
     this.setState({
       address : place.place_name,
-      location : newLoc
+      location : newLoc,
+      // id_user: req.session.currentUser._id
     })
   };
 
   render() {
+    const {user} = this.props.authContext; 
+    console.log(user);
     return (
       <div className="ItemForm-container">
         <form className="form" onSubmit={this.handleSubmit}>
@@ -200,4 +212,4 @@ class ItemForm extends Component {
   }
 }
 
-export default ItemForm;
+export default withUser(ItemForm);

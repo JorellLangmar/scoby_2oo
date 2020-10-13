@@ -7,7 +7,7 @@ import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import FormItem from "./components/Forms/FormItem";
-import FormProfile from "./components/Forms/formProfile";
+import FormProfile from "./components/Forms/FormProfile";
 
 function App() {
   return (
