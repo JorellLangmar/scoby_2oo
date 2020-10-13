@@ -115,7 +115,7 @@ class Profile extends Component {
           )}
 
           {/* Break whatever is belo  */}
-          {this.state.items == "" &&
+          {this.state.items === "" &&
           <div className="CardItem">
             <div className="item-empty">
               <div className="round-image">
@@ -126,7 +126,7 @@ class Profile extends Component {
           </div>}
 
           <div className="CardItem">
-          {this.state.items != "" && 
+          {this.state.items !== "" && 
            <h3>Your items</h3>
           }
 

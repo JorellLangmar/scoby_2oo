@@ -26,17 +26,17 @@ class FormItem extends Component {
       apiHandler
         .getOne(`/api/items/${this.props.id}`)
         .then((items) => {
-          console.log(items, "get items data :)");
+          console.log(items.image, "get items data :)");
           this.setState({
             name: items.name,
             description: items.description,
-            // image: items.image,
             quantity: items.quantity,
             category: items.category,
             address: items.address,
             contact: items.contact,
             location: items.location,
             id_user: items.id_user,
+            image: items.image,
           });
         })
         .catch((err) => console.log(err));
@@ -53,8 +53,40 @@ class FormItem extends Component {
 
 
   updateItem = () => {
+
+    function buildFormData(formData, data, parentKey) {
+      if (
+        data &&
+        typeof data === "object" &&
+        !(data instanceof Date) &&
+        !(data instanceof File)
+      ) {
+        Object.keys(data).forEach((key) => {
+          buildFormData(
+            formData,
+            data[key],
+            parentKey ? `${parentKey}[${key}]` : key
+          );
+        });
+      } else {
+        const value = data == null ? "" : data;
+
+        formData.append(parentKey, value);
+      }
+    }
+
+    function jsonToFormData(data) {
+      const formData = new FormData();
+
+      buildFormData(formData, data);
+      return formData;
+    }
+
+    let fd = jsonToFormData(this.state);
+
+
     apiHandler
-      .updateItem(`/api/items/${this.props.id}`, this.state)
+      .updateItem(`/api/items/${this.props.id}`, fd)
       .then(() => {
         this.props.history.push("/");
       })
