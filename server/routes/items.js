@@ -76,9 +76,9 @@ router.get('/:id', async function(req, res, next) {
 
   router.delete('/:id', async function(req, res, next) {
     try {
-      const dbResponse = await Item.findByIdAndDelete(req.params.id);
-      res.status(201)
-      res.json(dbResponse)
+      await Item.findByIdAndDelete(req.params.id);
+      const dbRes = await Item.find({id_user : {$eq : req.session.currentUser._id}});
+      res.json(dbRes)
       
     } catch (error) {
       res.status(500)

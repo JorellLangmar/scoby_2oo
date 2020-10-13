@@ -27,6 +27,15 @@ class Profile extends Component {
     this.setState({ [name]: value });
   }
 
+  deleteRow(itemId){
+    apiHandler
+    .deleteItem("/api/items/", itemId)
+    .then(apiRes => 
+      this.setState({ items: apiRes.data }))
+    .catch(apiErr => console.log(apiErr))
+  }
+
+
   handleSubmit = (evt) => {
     evt.preventDefault();
     apiHandler
@@ -106,7 +115,7 @@ class Profile extends Component {
           )}
 
           {/* Break whatever is belo  */}
-          {!this.state.items &&
+          {this.state.items == "" &&
           <div className="CardItem">
             <div className="item-empty">
               <div className="round-image">
@@ -117,7 +126,14 @@ class Profile extends Component {
           </div>}
 
           <div className="CardItem">
-            <h3>Your items</h3>
+          {this.state.items != "" && 
+           <h3>Your items</h3>
+          }
+
+            {this.state.items  &&
+                  this.state.items.map((item, i) => (
+                    < React.Fragment key={i}>
+                    
             <div className="item">
               <div className="round-image">
                 <img
@@ -127,16 +143,14 @@ class Profile extends Component {
               </div>
 
               <div className="description">
-                {this.state.items &&
-                  this.state.items.map((item, i) => (
-                    < React.Fragment key={i}>
+               
                       <h2>{item.name}</h2>
                       <h4>Quantity: {item.quantity} </h4>
                       <p>{item.description}</p>
                       <div className="buttons">
                         <button
                           className="btn-secondary"
-                          // onClick={delete item._id}
+                         onClick={() => (this.deleteRow(item._id))}
                         >
                           Delete
                         </button>
@@ -145,10 +159,10 @@ class Profile extends Component {
                           <button className="btn-primary">Edit</button>
                         </Link>
                       </div>
-                    </React.Fragment>
-                  ))}
               </div>
             </div>
+                    </React.Fragment>
+                  ))}
           </div>
         </section>
       </div>
