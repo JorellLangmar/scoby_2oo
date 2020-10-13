@@ -12,9 +12,10 @@ router.get("/", function (req, res, next) {
 ///api/users
 
 router.patch('/me', uploader.single("profileImg"), async function(req, res, next) {
-  console.log(req.body.password);
-  console.log(req.session.currentUser._id); 
   const salt = 10;
+
+  console.log(req.body.profileImg);
+
   try {
     let updateUser = req.body;
     if (req.file) {
