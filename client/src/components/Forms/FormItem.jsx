@@ -7,7 +7,7 @@ import UserContext from "../Auth/UserContext";
 
 
 
-class ItemForm extends Component {
+class FormItem extends Component {
   static contextType = UserContext;
 
   state = {
@@ -40,11 +40,6 @@ class ItemForm extends Component {
   };
 
   createItem() {
-    // const fd = new FormData();
-
-    // for (let key in this.state) {
-    //   fd.append(key, this.state[key]);
-    // }
 
 
     function buildFormData (formData, data, parentKey) {
@@ -206,4 +201,4 @@ class ItemForm extends Component {
   }
 }
 
-export default withUser(ItemForm);
+export default withUser(FormItem);
