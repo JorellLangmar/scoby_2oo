@@ -4,8 +4,8 @@ const multer = require("multer");
 
 // Configure cloudinary to connect to your cloudinary account.
 cloudinary.config({
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
   cloud_name: process.env.CLOUDINARY_NAME,
 });
 

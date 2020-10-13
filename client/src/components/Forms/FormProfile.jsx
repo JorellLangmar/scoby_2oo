@@ -17,21 +17,16 @@ class FormProfile extends Component {
       password: ""
     };
 
-
- getderivedstate
-
-
   handleChange = (event) => {
     const { user } = this.props.authContext;
     const key = event.target.name;
     const value =
       event.target.type === "file" ? event.target.files[0] : event.target.value;
 
+    console.log("key: ",key, value, "<<< value" )
+
     this.setState({
       [key]: value,
-
-
-
     });
   };
 
@@ -69,6 +64,7 @@ class FormProfile extends Component {
           className="form"
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
+        
         >
           <h1 className="header">Edit profile</h1>
 
@@ -83,8 +79,8 @@ class FormProfile extends Component {
             /> */}
 
             <label htmlFor="profileImg" className="btn"></label>
-            <input id="profileImg" type="file" />
-          </div>
+            <input id="profileImg" type="file" name="profileImg"/>
+          </div> 
 
           <div className="form-group">
             <label className="label" htmlFor="firstName">
