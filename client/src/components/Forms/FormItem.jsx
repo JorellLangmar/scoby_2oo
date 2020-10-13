@@ -86,7 +86,7 @@ class FormItem extends Component {
 
 
     apiHandler
-      .updateItem(`/api/items/${this.props.id}`, fd)
+      .updateItem(`/api/items/${this.props.id}`, this.state)
       .then(() => {
         this.props.history.push("/");
       })
@@ -249,7 +249,6 @@ class FormItem extends Component {
               id="image"
               type="file"
               name="image"
-              value={this.state.image}
               onChange={this.handleChange}
             />
           </div>
