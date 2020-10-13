@@ -1,7 +1,7 @@
 import React from "react";
-import FormItem from "../components/FormItem";
+import FormItem from "../components/Forms/FormItem";
 
-const EditItems = (props) => {
+const EditItem = (props) => {
   return (
     <div>
       <FormItem action="edit" id={props.match.params.id} />
@@ -9,4 +9,4 @@ const EditItems = (props) => {
   );
 };
 
-export default EditItems;
+export default EditItem;

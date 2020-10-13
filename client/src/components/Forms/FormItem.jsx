@@ -20,6 +20,30 @@ class FormItem extends Component {
     id_user: "",
   };
 
+  componentDidMount = () => {
+    console.log(this.props.action);
+    if (this.props.action === "edit") {
+      apiHandler
+        .getOne(`/api/items/${this.props.id}`)
+        .then((items) => {
+          console.log(items, "get items data :)");
+          this.setState({
+            name: items.name,
+            description: items.description,
+            // image: items.image,
+            quantity: items.quantity,
+            category: items.category,
+            address: items.address,
+            contact: items.contact,
+            location: items.location,
+            id_user: items.id_user,
+          });
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+
   handleChange = (event) => {
     const value =
       event.target.type === "file" ? event.target.files[0] : event.target.value;
@@ -27,9 +51,10 @@ class FormItem extends Component {
     this.setState({ [name]: value });
   };
 
+
   updateItem = () => {
     apiHandler
-      .updateItem("/api/items" + this.props.id, this.state)
+      .updateItem(`/api/items/${this.props.id}`, this.state)
       .then(() => {
         this.props.history.push("/");
       })
@@ -117,6 +142,7 @@ class FormItem extends Component {
               type="text"
               placeholder="What are you giving away ?"
               name="name"
+              value={this.state.name}
               onChange={this.handleChange}
             />
           </div>
@@ -130,9 +156,10 @@ class FormItem extends Component {
               id="category"
               defaultValue="-1"
               name="category"
+              value={this.state.category}
               onChange={this.handleChange}
             >
-              <option value="-1" disabled>
+              <option value={this.state.category} disabled>
                 Select a category
               </option>
               <option value="Plant">Plant</option>
@@ -151,6 +178,7 @@ class FormItem extends Component {
               id="quantity"
               type="number"
               name="quantity"
+              value={this.state.quantity}
               onChange={this.handleChange}
             />
           </div>
@@ -159,7 +187,11 @@ class FormItem extends Component {
             <label className="label" htmlFor="location">
               Address
             </label>
-            <LocationAutoComplete onSelect={this.handlePlace} name="address" />
+            <LocationAutoComplete
+              value={this.state.address}
+              onSelect={this.handlePlace}
+              name="address"
+            />
           </div>
 
           <div className="form-group">
@@ -171,6 +203,7 @@ class FormItem extends Component {
               className="text-area"
               placeholder="Tell us something about this item"
               name="description"
+              value={this.state.description}
               onChange={this.handleChange}
             ></textarea>
           </div>
@@ -184,6 +217,7 @@ class FormItem extends Component {
               id="image"
               type="file"
               name="image"
+              value={this.state.image}
               onChange={this.handleChange}
             />
           </div>

@@ -1,13 +1,13 @@
 import React from "react";
-import FormItem from "../components/FormItem";
+import FormItem from "../components/Forms/FormItem";
 
 
-const CreateItems = (props) => {
+const CreateItem = (props) => {
   return (
     <div>
-      <FormFriend />
+      <FormItem />
     </div>
   );
 };
 
-export default CreateItems;
+export default CreateItem;
